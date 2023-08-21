@@ -1,6 +1,5 @@
 import time
 from math import log, atan, sqrt 
-from matplotlib import pyplot as plt
 
 start_time = time.time()
 
@@ -59,19 +58,17 @@ def thermal_transit(
 
     return T-273, heating_consumption
 
-    """
-    plt.figure(figsize=(10, 6))
-    plt.plot(times, temperatures)
-    plt.xlabel('Time (s)')
-    plt.ylabel('Temperature (K)')
-    plt.title('Temperature of the object over time with conduction')
-    plt.grid(True)
-    plt.show()
+# 今回は使わなかったが，物質の熱容量の温度変化を考慮すれば必要
+def t_change(T_initial, Q_in, time_in, T_conductance):
+    dt = 0.1
+    T_increace = 0
+    for _ in range(int(time_in/dt)):
+        delta_T = Q_in * dt / T_conductance(T)
+        T_increace += delta_T
+    return T_increace
 
-    return T-273
+def C_linear(T, C0=1000, alpha=1):
+    return C0 + alpha * T
 
-# テスト関数の実行
-print(thermal_transit())
-end_time = time.time()
-elapsed_time = end_time - start_time
-print(f"実行時間: {elapsed_time} 秒")"""
+if __name__ == "__main__":
+    thermal_transit()
