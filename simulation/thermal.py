@@ -9,8 +9,7 @@ def thermal_transit(
         C=1000,
         Q_in=100,
         T_initial=300,  
-        T_env=100,    
-        threshold=0.001,    
+        T_env=100,     
         vertical=0.3,  
         horizontal=0.45,  
         distance=0.15,  
@@ -31,7 +30,10 @@ def thermal_transit(
     x = vertical / distance
     y = horizontal / distance
 
-    F_ij = log(((1+x**2)*(1+y**2))/(1+x**2+y**2)) +            x**2*log((x**2 * (1+x**2+y**2))/((1+x**2)*(x**2+y**2))) +            y**2*log((y**2 * (1+x**2+y**2))/((1+y**2)*(x**2+y**2))) +            4*x*atan(1/x) + 4*y*atan(1/y) - 4*sqrt(x**2+y**2)*atan(1/sqrt(x**2+y**2))
+    F_ij = log(((1+x**2)*(1+y**2))/(1+x**2+y**2)) + \
+                  x**2*log((x**2 * (1+x**2+y**2))/((1+x**2)*(x**2+y**2))) + \
+                  y**2*log((y**2 * (1+x**2+y**2))/((1+y**2)*(x**2+y**2))) + \
+                  4*x*atan(1/x) + 4*y*atan(1/y) - 4*sqrt(x**2+y**2)*atan(1/sqrt(x**2+y**2))
 
     R1 = emissivity_rover * S_top
     R2 = emissivity_rover * emissivity_regolith * S_side
@@ -42,7 +44,10 @@ def thermal_transit(
 
     while time <= passed_time:
         Q_radiation = (R1+R2+R3) * sigma * (T**4 - T_env**4)
-        Q_conduction = k * A * (T - T_env) / d
+        R_leg = d / (k * A)
+        R_T = 0.07
+        R_tire = 0.1 / (0.22 * 0.0003)
+        Q_conduction = (T - T_env) / (R_leg + R_T + R_tire)
         
         Q_out = Q_radiation + Q_conduction
         
