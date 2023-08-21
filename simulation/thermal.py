@@ -4,11 +4,12 @@ from matplotlib import pyplot as plt
 
 start_time = time.time()
 
-def thermal_transit(passed_time=1000,
+def thermal_transit(
+        passed_time=1000,
         emissivity_rover=0.655,
+        C=1000,
         T_initial=300,  
-        T_env=100,  
-        C=1000,  
+        T_env=100,    
         Q_in=100,  
         threshold=0.001,    
         vertical=0.3,  
