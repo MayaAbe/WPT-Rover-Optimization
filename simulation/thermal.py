@@ -55,7 +55,9 @@ def thermal_transit(
             time_below_273 = passed_time - time
             dT_when_below_273 = dT/dt
 
-    return T-273, time_below_273, dT_when_below_273
+    heating_consumption = time_below_273 * dT_when_below_273
+
+    return T-273, heating_consumption
 
     """
     plt.figure(figsize=(10, 6))

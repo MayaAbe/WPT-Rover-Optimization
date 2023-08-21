@@ -25,8 +25,8 @@ B_DECREACE = INTERVAL * CURRENT # [As(3600Ah)]
 t = thermal.thermal_transit(INTERVAL, EMISSIVITY, T_CAPASITY, CONSUMPTION)
 
 TEMPARETURE = t[0]
-HEATING_TIME = t[1]
-HEATING_STRENGTH = t[2]
+HEATING_CONSUMPTION = t[1] # [W]
 
 
-# print(f"{t[0]}, {t[1]}, {t[2]}")
+
+# print(f"{t[0]}, {t[1]}")
