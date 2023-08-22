@@ -38,8 +38,8 @@ def evaluate_rover(DISTANCE = 1000, CHARGE_SPEED = 20, T_CAPASITY = 1000, EMISSI
     N_STATION = GOAL_DISTINATION / DISTANCE
     TIME += N_STATION * INTERVAL
     count = 0
-    print("回数" + str(N_STATION))
-    print(str(B_CAPASITY_AIM / 3600))
+    #print("回数" + str(N_STATION))
+    #print(str(B_CAPASITY_AIM / 3600))
 
     while GOAL_DISTINATION >= 0:
         t = thermal.thermal_transit(INTERVAL, EMISSIVITY, T_CAPASITY, CONSUMPTION, T_ROVER)
@@ -56,7 +56,7 @@ def evaluate_rover(DISTANCE = 1000, CHARGE_SPEED = 20, T_CAPASITY = 1000, EMISSI
 
         if B_CAPASITY < 0:
             FLAG = 1
-            print("battely_runout")
+            #print("battely_runout")
             break
 
         # 給電時間の計算
@@ -73,6 +73,9 @@ def evaluate_rover(DISTANCE = 1000, CHARGE_SPEED = 20, T_CAPASITY = 1000, EMISSI
             # 給電中のバッテリーとローバー温度の上昇
             B_CAPASITY = B_CAPASITY_AIM
             T_ROVER += B_charge_time * CHARGE_SPEED * (1 - EFF) * MASS_ROVER / T_CAPASITY
+
+            if T_ROVER >= 313:
+                FLAG = 1
 
         GOAL_DISTINATION -= DISTANCE
         """count += 1

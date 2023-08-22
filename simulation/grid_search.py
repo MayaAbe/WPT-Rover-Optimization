@@ -1,11 +1,27 @@
 import evaluate
+import time
 
-def grid_search(evaluate_rover, distance_range=(10, 1010), charge_speed_range=(10, 100),
-                capacity_range=(10, 1010), emissivity_range=(0, 1), increments=(200, 50, 200, 0.5)):
+start_time = time.time()
+
+#def grid_search(evaluate_rover, distance_range=(10, 1010), charge_speed_range=(10, 100),
+#                capacity_range=(10, 1010), emissivity_range=(0, 1), increments=(200, 50, 200, 0.5)): -> 0, 85, 1010, 0.25
+
+#def grid_search(evaluate_rover, distance_range=(10, 110), charge_speed_range=(10, 100),
+#                capacity_range=(10, 510), emissivity_range=(0, 0.5), increments=(10, 10, 50, 0.1)): -> 10, 100, 10, 0.0
+
+def grid_search(evaluate_rover, distance_range=(10, 200), charge_speed_range=(50, 100),
+                capacity_range=(510, 1010), emissivity_range=(0, 0.5), increments=(20, 10, 100, 0.1)):
     
     min_time = float('inf')
     best_params = None
     best_initial_param = None
+
+    total_iterations = ((distance_range[1] - distance_range[0]) // increments[0] + 1) * \
+                       ((charge_speed_range[1] - charge_speed_range[0]) // increments[1] + 1) * \
+                       ((capacity_range[1] - capacity_range[0]) // increments[2] + 1) * \
+                       ((int(emissivity_range[1]*100) - int(emissivity_range[0]*100)) // int(increments[3]*100) + 1)
+    
+    current_iteration =0
 
 
     for distance in range(distance_range[0], distance_range[1] + 1, increments[0]):
@@ -19,7 +35,9 @@ def grid_search(evaluate_rover, distance_range=(10, 1010), charge_speed_range=(1
                         min_time = time
                         best_params = (distance, charge_speed, capacity, emissivity)
                         best_initial_param = initial_param
-                        
+                    
+                    current_iteration += 1
+                    print(f"Current Iteration: {current_iteration}/{total_iterations}")
     return best_params, best_initial_param
 
 # For testing purpose, let's define a dummy evaluate_rover function
@@ -32,6 +50,9 @@ def dummy_evaluate_rover(DISTANCE, CHARGE_SPEED, T_CAPASITY, EMISSIVITY):
     INITIAL_PARAM = (DISTANCE, CHARGE_SPEED, T_CAPASITY, EMISSIVITY)
     return TIME, SUPPLY_POWER, N_STATION, FLAG, INITIAL_PARAM
 """
-    
-# Testing the grid_search function with the dummy function
+
 print(grid_search(evaluate.evaluate_rover))
+
+end_time = time.time()
+elapsed_time = end_time - start_time
+print(f"実行時間: {elapsed_time} 秒")
