@@ -43,19 +43,22 @@ def thermal_transit(
     dT_when_below_273 = 0
 
     while time <= passed_time:
-        Q_radiation = (R1+R2+R3) * sigma * (T**4 - T_env**4)
-        R_leg = d / (k * A)
-        R_T = 0.07
-        R_tire = 0.1 / (0.22 * 0.0003)
-        Q_conduction = (T - T_env) / (R_leg + R_T + R_tire)
-        
-        Q_out = Q_radiation + Q_conduction
-        
-        dT = (Q_in - Q_out) * dt / C
-        T += dT
+        if T >= 273:
+            Q_radiation = (R1+R2+R3) * sigma * (T**4 - T_env**4)
+            R_leg = d / (k * A)
+            R_T = 0.07
+            R_tire = 0.1 / (0.22 * 0.0003)
+            Q_conduction = (T - T_env) / (R_leg + R_T + R_tire)
+            
+            Q_out = Q_radiation + Q_conduction
+            
+            dT = (Q_in - Q_out) * dt / C
+            T += dT
+        else:
+            T = 273
         time += dt
 
-        if T < 273 and time_below_273 == 0:
+        if T == 273 and time_below_273 == 0:
             time_below_273 = passed_time - time
             dT_when_below_273 = dT/dt
 
